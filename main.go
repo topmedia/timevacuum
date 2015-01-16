@@ -1,28 +1,38 @@
 package main
 
 import (
-	"encoding/xml"
 	"flag"
 	"fmt"
+	"log"
+	"os"
+
+	"github.com/topmedia/timevacuum/entities"
 )
 
 var (
-	user = flag.String("user", "", "Username for API access")
-	pass = flag.String("pass", "", "Password for API access")
+	user = flag.String("user", os.Getenv("AUTOTASK_USER"), "Username for API access")
+	pass = flag.String("pass", os.Getenv("AUTOTASK_PASS"), "Password for API access")
 )
 
 func main() {
 	flag.Parse()
 
-	q := NewQueryXML()
-	q.Entity("timeentry")
-	q.FieldExpression("dateworked", "greaterthan", "2015-01-14")
+	if user == nil || pass == nil {
+		log.Fatal("Please specify your Autotask username and password via-user and -pass")
+	}
 
-	c := NewClient(*user, *pass)
-	c.Request(q)
+	api := NewClient(*user, *pass)
 
-	var env Envelope
+	rr := api.FetchResources(&entities.QueryExpression{Field: "active", Op: "equals", Value: "true"})
 
-	xml.Unmarshal(c.Body(), &env)
-	fmt.Printf("%v", env)
+	for _, r := range rr {
+		fmt.Printf("%v\n", r.FirstName)
+	}
+
+	te := api.FetchTimeEntries(&entities.QueryExpression{Field: "dateworked", Op: "greaterthan", Value: "2015-01-14"})
+
+	for _, r := range te {
+		fmt.Printf("%v\n", r.HoursWorked)
+	}
+
 }
