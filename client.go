@@ -37,6 +37,10 @@ func (c *Client) Request(q *entities.QueryXML) []byte {
 
 	c.Response, err = c.HTTPClient.Do(req)
 
+	if code := c.Response.StatusCode; code != 200 {
+		log.Fatalf("HTTP Request failed: %s", c.Response.Status)
+	}
+
 	if err != nil {
 		log.Fatalf("Error reading response XML: %v", err)
 	}
