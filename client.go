@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -68,22 +69,54 @@ func (c *Client) Body() []byte {
 	return body
 }
 
-func (c *Client) FetchResources(qe *entities.QueryExpression) []entities.Resource {
+func (c *Client) FetchResources(qe *entities.QueryExpression) map[int]entities.Resource {
 	q := qe.ToQueryXML()
-	q.Entity("resource")
+	q.Entity("Resource")
 	res := c.Request(q)
 	var rr entities.ResourceResults
 	xml.Unmarshal(res, &rr)
-	return rr.Resources
+
+	m := make(map[int]entities.Resource, len(rr.Resources))
+	for _, r := range rr.Resources {
+		m[r.ID] = r
+	}
+	return m
+}
+
+func (c *Client) FetchTickets(qe *entities.QueryExpression) []entities.Ticket {
+	q := qe.ToQueryXML()
+	q.Entity("Ticket")
+	res := c.Request(q)
+	var tr entities.TicketResults
+	xml.Unmarshal(res, &tr)
+	return tr.Tickets
+}
+
+func (c *Client) FetchTicketByID(id int) *entities.Ticket {
+	tr := c.FetchTickets(&entities.QueryExpression{Field: "id", Op: "equals", Value: fmt.Sprintf("%d", id)})
+
+	if len(tr) == 0 {
+		return nil
+	}
+	return &tr[0]
 }
 
 func (c *Client) FetchTimeEntries(qe *entities.QueryExpression) []entities.TimeEntry {
 	q := qe.ToQueryXML()
-	q.Entity("timeentry")
+	q.Entity("Timeentry")
 	res := c.Request(q)
-	var te entities.TimeEntryResults
-	xml.Unmarshal(res, &te)
-	return te.TimeEntries
+	var ter entities.TimeEntryResults
+	xml.Unmarshal(res, &ter)
+
+	rr := c.FetchResources(&entities.QueryExpression{
+		Field: "Active", Op: "Equals", Value: "true"})
+
+	for k, te := range ter.TimeEntries {
+		r := rr[te.ResourceID]
+		ter.TimeEntries[k].ResourceName = fmt.Sprintf("%s %s", r.FirstName, r.LastName)
+	}
+
+	return ter.TimeEntries
 }
 
 func NewClient(user, pass string) *Client {

@@ -5,13 +5,18 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/topmedia/timevacuum/entities"
 )
 
 var (
-	user = flag.String("user", os.Getenv("AUTOTASK_USER"), "Username for API access")
-	pass = flag.String("pass", os.Getenv("AUTOTASK_PASS"), "Password for API access")
+	user = flag.String("user", os.Getenv("AUTOTASK_USER"),
+		"Username for API access")
+	pass = flag.String("pass", os.Getenv("AUTOTASK_PASS"),
+		"Password for API access")
+	since = flag.String("since", time.Now().Format("2006-01-02"),
+		"Fetch entries since this date (e.g. 2015-01-16)")
 )
 
 func main() {
@@ -23,16 +28,16 @@ func main() {
 
 	api := NewClient(*user, *pass)
 
-	rr := api.FetchResources(&entities.QueryExpression{Field: "active", Op: "equals", Value: "true"})
+	tes := api.FetchTimeEntries(&entities.QueryExpression{Field: "CreateDateTime", Op: "GreaterThan", Value: *since})
 
-	for _, r := range rr {
-		fmt.Printf("%v\n", r.FirstName)
-	}
-
-	te := api.FetchTimeEntries(&entities.QueryExpression{Field: "dateworked", Op: "greaterthan", Value: "2015-01-14"})
-
-	for _, r := range te {
-		fmt.Printf("%v\n", r.HoursWorked)
+	for k, te := range tes {
+		if te.TicketID == 0 {
+			continue
+		}
+		t := api.FetchTicketByID(te.TicketID)
+		tes[k].Ticket = t
+		fmt.Printf("#%s %s (%s: %v)\n", t.TicketNumber, t.Title,
+			te.ResourceName, te.HoursWorked)
 	}
 
 }
