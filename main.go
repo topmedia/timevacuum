@@ -35,8 +35,13 @@ func main() {
 			continue
 		}
 		t := api.FetchTicketByID(te.TicketID)
+		if t == nil {
+			continue
+		}
+		a := api.FetchAccountByID(t.AccountID)
 		tes[k].Ticket = t
-		fmt.Printf("#%s %s (%s: %v)\n", t.TicketNumber, t.Title,
+		tes[k].Account = a
+		fmt.Printf("%s #%s %s (%s: %v)\n", a.AccountName, t.TicketNumber, t.Title,
 			te.ResourceName, te.HoursWorked)
 	}
 

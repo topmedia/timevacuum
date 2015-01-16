@@ -2,6 +2,17 @@ package entities
 
 import "encoding/xml"
 
+type AccountResults struct {
+	XMLName  xml.Name  `xml:"EntityResults"`
+	Accounts []Account `xml:"Entity"`
+}
+
+type Account struct {
+	XMLName     xml.Name `xml:"Entity"`
+	ID          int      `xml:"id"`
+	AccountName string
+}
+
 type ResourceResults struct {
 	XMLName   xml.Name   `xml:"EntityResults"`
 	Resources []Resource `xml:"Entity"`
@@ -43,5 +54,6 @@ type TimeEntry struct {
 	ResourceID   int
 	ResourceName string
 	TicketID     int
-	Ticket       *Ticket
+	Ticket       *Ticket  `xml:"-"`
+	Account      *Account `xml:"-"`
 }

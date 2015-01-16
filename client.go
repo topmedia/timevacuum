@@ -87,6 +87,24 @@ func (c *Client) FetchResources(qe *entities.QueryExpression) map[int]entities.R
 	return m
 }
 
+func (c *Client) FetchAccounts(qe *entities.QueryExpression) []entities.Account {
+	q := qe.ToQueryXML()
+	q.Entity("Account")
+	res := c.Request(q)
+	var ar entities.AccountResults
+	xml.Unmarshal(res, &ar)
+	return ar.Accounts
+}
+
+func (c *Client) FetchAccountByID(id int) *entities.Account {
+	ar := c.FetchAccounts(&entities.QueryExpression{Field: "id", Op: "equals", Value: fmt.Sprintf("%d", id)})
+
+	if len(ar) == 0 {
+		return nil
+	}
+	return &ar[0]
+}
+
 func (c *Client) FetchTickets(qe *entities.QueryExpression) []entities.Ticket {
 	q := qe.ToQueryXML()
 	q.Entity("Ticket")
