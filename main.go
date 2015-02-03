@@ -54,6 +54,18 @@ func CreateIndex(c *goes.Connection) {
 							},
 						},
 					},
+					"title": map[string]interface{}{
+						"type": "string",
+						"fields": map[string]interface{}{
+							"raw": map[string]interface{}{
+								"index": "not_analyzed",
+								"type":  "string",
+							},
+						},
+					},
+					"hours_worked": map[string]interface{}{
+						"type": "float",
+					},
 				},
 			},
 		},
