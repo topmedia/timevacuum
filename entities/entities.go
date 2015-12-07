@@ -2,6 +2,7 @@ package entities
 
 import (
 	"encoding/xml"
+	"fmt"
 	"time"
 
 	"github.com/belogik/goes"
@@ -31,6 +32,18 @@ type Resource struct {
 	LastName   string
 }
 
+type RoleResults struct {
+	XMLName xml.Name `xml:"EntityResults"`
+	Roles   []Role   `xml:"Entity"`
+}
+
+type Role struct {
+	XMLName xml.Name `xml:"Entity"`
+	ID      int      `xml:"id"`
+	RoleID  int
+	Name    string
+}
+
 type TicketResults struct {
 	XMLName xml.Name `xml:"EntityResults"`
 	Tickets []Ticket `xml:"Entity"`
@@ -57,7 +70,9 @@ type TimeEntry struct {
 	ID            int      `xml:"id"`
 	HoursWorked   float32
 	ResourceID    int
+	RoleID        int
 	ResourceName  string
+	RoleName      string
 	TicketID      int
 	Ticket        *Ticket    `xml:"-"`
 	Account       *Account   `xml:"-"`
@@ -66,6 +81,7 @@ type TimeEntry struct {
 
 func (te *TimeEntry) Document(t *Ticket, a *Account) goes.Document {
 	return goes.Document{
+		Id:    fmt.Sprintf("%s-%d", t.TicketNumber, te.ID),
 		Index: "autotask",
 		Type:  "timeentry",
 		Fields: map[string]interface{}{
@@ -73,6 +89,7 @@ func (te *TimeEntry) Document(t *Ticket, a *Account) goes.Document {
 			"ticket_number": t.TicketNumber,
 			"title":         t.Title,
 			"resource_name": te.ResourceName,
+			"role_name":     te.RoleName,
 			"hours_worked":  te.HoursWorked,
 			"date_time":     te.StartDateTime,
 		},

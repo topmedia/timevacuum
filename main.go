@@ -36,6 +36,15 @@ func CreateIndex(c *goes.Connection) {
 		"mappings": map[string]interface{}{
 			"_default_": map[string]interface{}{
 				"properties": map[string]interface{}{
+					"role_name": map[string]interface{}{
+						"type": "string",
+						"fields": map[string]interface{}{
+							"raw": map[string]interface{}{
+								"index": "not_analyzed",
+								"type":  "string",
+							},
+						},
+					},
 					"resource_name": map[string]interface{}{
 						"type": "string",
 						"fields": map[string]interface{}{
@@ -109,8 +118,8 @@ func main() {
 			log.Fatal("Indexing failed: %s", err)
 		}
 
-		fmt.Printf("%s #%s %s (%s: %v)\n", a.AccountName, t.TicketNumber, t.Title,
-			te.ResourceName, te.HoursWorked)
+		fmt.Printf("%s #%s %s (%s: %v - %v)\n", a.AccountName, t.TicketNumber, t.Title,
+			te.ResourceName, te.HoursWorked, te.RoleName)
 	}
 
 }

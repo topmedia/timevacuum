@@ -87,6 +87,20 @@ func (c *Client) FetchResources(qe *entities.QueryExpression) map[int]entities.R
 	return m
 }
 
+func (c *Client) FetchRoles(qe *entities.QueryExpression) map[int]entities.Role {
+	q := qe.ToQueryXML()
+	q.Entity("Role")
+	res := c.Request(q)
+	var rr entities.RoleResults
+	xml.Unmarshal(res, &rr)
+
+	m := make(map[int]entities.Role, len(rr.Roles))
+	for _, r := range rr.Roles {
+		m[r.ID] = r
+	}
+	return m
+}
+
 func (c *Client) FetchAccounts(qe *entities.QueryExpression) []entities.Account {
 	q := qe.ToQueryXML()
 	q.Entity("Account")
@@ -132,10 +146,15 @@ func (c *Client) FetchTimeEntries(qe *entities.QueryExpression) []entities.TimeE
 
 	rr := c.FetchResources(&entities.QueryExpression{
 		Field: "Active", Op: "Equals", Value: "true"})
+	rm := c.FetchRoles(&entities.QueryExpression{
+		Field: "Id", Op: "GreaterThan", Value: "0"})
 
 	for k, te := range ter.TimeEntries {
 		r := rr[te.ResourceID]
 		ter.TimeEntries[k].ResourceName = fmt.Sprintf("%s %s", r.FirstName, r.LastName)
+
+		rl := rm[te.RoleID]
+		ter.TimeEntries[k].RoleName = rl.Name
 	}
 
 	return ter.TimeEntries
