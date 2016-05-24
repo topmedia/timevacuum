@@ -54,7 +54,8 @@ func (c *Client) ExtractResults() []byte {
 	src.ReadFrom(c.Response.Body)
 	res := src.FindElement("//EntityResults")
 
-	dst := etree.CreateDocument(res)
+	dst := etree.NewDocument()
+	dst.SetRoot(res)
 	b, err := dst.WriteToBytes()
 
 	if err != nil {
