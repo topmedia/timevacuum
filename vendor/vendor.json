@@ -3,6 +3,14 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "4JUlwdhhqFZEvSc4Atmjj5ebPJQ=",
+			"path": "github.com/OwnLocal/goes",
+			"revision": "6c9647b81cbf8daf85a01b1c15a7cc23de351c27",
+			"revisionTime": "2016-07-26T19:28:54Z",
+			"version": "=v1.0.0",
+			"versionExact": "v1.0.0"
+		},
+		{
 			"checksumSHA1": "OKRYtrKItvFaHK1PQSMhM365BeE=",
 			"path": "github.com/beevik/etree",
 			"revision": "4cd0dd976db869f817248477718071a28e978df0",
@@ -11,14 +19,14 @@
 		{
 			"checksumSHA1": "6H8FRbsxzTB9GmImcZkGLEYbL6I=",
 			"path": "github.com/topmedia/go-autotask/client",
-			"revision": "5b5b5f0d363221101ba48fbd6bd2679aa00fa7a7",
-			"revisionTime": "2017-01-05T20:53:41Z"
+			"revision": "cd132ce05b504411d8d660d8277a1c288c8c28c5",
+			"revisionTime": "2017-01-05T21:32:03Z"
 		},
 		{
-			"checksumSHA1": "sCl+hywW3ecUeagnSRlf2cqHy3Y=",
+			"checksumSHA1": "1XstqLGNbzCzmRbcK6QOlcW4hwk=",
 			"path": "github.com/topmedia/go-autotask/entities",
-			"revision": "5b5b5f0d363221101ba48fbd6bd2679aa00fa7a7",
-			"revisionTime": "2017-01-05T20:53:41Z"
+			"revision": "cd132ce05b504411d8d660d8277a1c288c8c28c5",
+			"revisionTime": "2017-01-05T21:32:03Z"
 		}
 	],
 	"rootPath": "github.com/topmedia/timevacuum"
