@@ -17,16 +17,16 @@
 			"revisionTime": "2016-12-09T19:49:18Z"
 		},
 		{
-			"checksumSHA1": "6H8FRbsxzTB9GmImcZkGLEYbL6I=",
+			"checksumSHA1": "N3vqGigF8vbwASwnnWtCWXlle5Y=",
 			"path": "github.com/topmedia/go-autotask/client",
-			"revision": "cd132ce05b504411d8d660d8277a1c288c8c28c5",
-			"revisionTime": "2017-01-05T21:32:03Z"
+			"revision": "a3a38b8053023187f748679631fc6b4147bd1f43",
+			"revisionTime": "2017-01-05T22:16:29Z"
 		},
 		{
-			"checksumSHA1": "1XstqLGNbzCzmRbcK6QOlcW4hwk=",
+			"checksumSHA1": "eIWiFSz86+S9RQb4X2+t/ZMiltM=",
 			"path": "github.com/topmedia/go-autotask/entities",
-			"revision": "cd132ce05b504411d8d660d8277a1c288c8c28c5",
-			"revisionTime": "2017-01-05T21:32:03Z"
+			"revision": "a3a38b8053023187f748679631fc6b4147bd1f43",
+			"revisionTime": "2017-01-05T22:16:29Z"
 		}
 	],
 	"rootPath": "github.com/topmedia/timevacuum"

@@ -28,3 +28,4 @@ timevacuum
 .Ulysses-Group.plist
 
 vendor/*/
+bin
