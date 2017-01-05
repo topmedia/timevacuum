@@ -8,8 +8,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/belogik/goes"
-	"github.com/topmedia/timevacuum/entities"
+	"github.com/OwnLocal/goes"
+	"github.com/topmedia/go-autotask/client"
+	"github.com/topmedia/go-autotask/entities"
 )
 
 var (
@@ -87,6 +88,23 @@ func CreateIndex(c *goes.Connection) {
 	}
 }
 
+func TimeEntryDocument(te *entities.TimeEntry, t *entities.Ticket, a *entities.Account) goes.Document {
+	return goes.Document{
+		Id:    fmt.Sprintf("%s-%d", t.TicketNumber, te.ID),
+		Index: "autotask",
+		Type:  "timeentry",
+		Fields: map[string]interface{}{
+			"account_name":  a.AccountName,
+			"ticket_number": t.TicketNumber,
+			"title":         t.Title,
+			"resource_name": te.ResourceName,
+			"role_name":     te.RoleName,
+			"hours_worked":  te.HoursWorked,
+			"date_time":     te.StartDateTime,
+		},
+	}
+}
+
 func main() {
 	flag.Parse()
 
@@ -94,7 +112,7 @@ func main() {
 		log.Fatal("Please specify your Autotask username and password via-user and -pass")
 	}
 
-	api := NewClient(*user, *pass)
+	api := client.NewClient(*user, *pass)
 	es := goes.NewConnection(*es_host, *es_port)
 	CreateIndex(es)
 
@@ -112,7 +130,7 @@ func main() {
 		tes[k].Ticket = t
 		tes[k].Account = a
 
-		_, err := es.Index(te.Document(t, a), url.Values{})
+		_, err := es.Index(TimeEntryDocument(&te, t, a), url.Values{})
 
 		if err != nil {
 			log.Fatal("Indexing failed: %s", err)

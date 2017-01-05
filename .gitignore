@@ -26,3 +26,5 @@ _testmain.go
 *.sqp
 timevacuum
 .Ulysses-Group.plist
+
+vendor/*/

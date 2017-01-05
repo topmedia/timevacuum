@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "OKRYtrKItvFaHK1PQSMhM365BeE=",
+			"path": "github.com/beevik/etree",
+			"revision": "4cd0dd976db869f817248477718071a28e978df0",
+			"revisionTime": "2016-12-09T19:49:18Z"
+		},
+		{
+			"checksumSHA1": "6H8FRbsxzTB9GmImcZkGLEYbL6I=",
+			"path": "github.com/topmedia/go-autotask/client",
+			"revision": "5b5b5f0d363221101ba48fbd6bd2679aa00fa7a7",
+			"revisionTime": "2017-01-05T20:53:41Z"
+		},
+		{
+			"checksumSHA1": "sCl+hywW3ecUeagnSRlf2cqHy3Y=",
+			"path": "github.com/topmedia/go-autotask/entities",
+			"revision": "5b5b5f0d363221101ba48fbd6bd2679aa00fa7a7",
+			"revisionTime": "2017-01-05T20:53:41Z"
+		}
+	],
+	"rootPath": "github.com/topmedia/timevacuum"
+}
